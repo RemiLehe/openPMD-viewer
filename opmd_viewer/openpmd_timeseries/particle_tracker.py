@@ -9,7 +9,6 @@ License: 3-Clause-BSD-LBNL
 """
 import warnings
 import numpy as np
-from .data_reader.particle_reader import read_species_data
 try:
     from .cython_function import extract_indices_cython
     cython_function_available = True
@@ -113,7 +112,7 @@ class ParticleTracker( object ):
             " - make sure that Cython is installed \n"
             " - then reinstall openPMD-viewer")
 
-    def extract_tracked_particles( self, file_handle, data_list,
+    def extract_tracked_particles( self, data_reader, data_list,
                                     species, extensions ):
         """
         Select the elements of each particle quantities in data_list,
@@ -121,8 +120,8 @@ class ParticleTracker( object ):
 
         Parameters
         ----------
-        file_handle: h5py.File object
-            The HDF5 file from which to extract data
+        data_reader: a DataReader object
+            Used in order to extract the macroparticle IDs
 
         data_list: list of 1darrays
             A list of arrays with one element per macroparticle, that represent
@@ -142,7 +141,7 @@ class ParticleTracker( object ):
         initialization)
         """
         # Extract the particle id, and get the extraction indices
-        pid = read_species_data(file_handle, species, 'id', extensions)
+        pid = data_reader.read_species_data(species, 'id', extensions)
         selected_indices = self.get_extraction_indices( pid )
 
         # For each particle quantity, select only the tracked particles

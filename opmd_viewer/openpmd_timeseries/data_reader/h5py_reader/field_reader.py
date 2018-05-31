@@ -11,7 +11,7 @@ import os
 import h5py
 import numpy as np
 from .utilities import get_shape, get_data, get_bpath
-from .field_metainfo import FieldMetaInformation
+from opmd_viewer.openpmd_timeseries.field_metainfo import FieldMetaInformation
 
 
 def read_field_cartesian( filename, field_path, axis_labels,

@@ -7,66 +7,18 @@ Copyright 2015-2017, openPMD-viewer contributors
 Authors: Remi Lehe, Richard Pausch
 License: 3-Clause-BSD-LBNL
 """
-
-import os
 import numpy as np
-import h5py
-from .data_reader.particle_reader import read_species_data
 
 
-def list_h5_files(path_to_dir):
-    """
-    Return a list of the hdf5 files in this directory,
-    and a list of the corresponding iterations
-
-    Parameter
-    ---------
-    path_to_dir : string
-        The path to the directory where the hdf5 files are.
-
-    Returns
-    -------
-    A tuple with:
-    - a list of strings which correspond to the absolute path of each file
-    - an array of integers which correspond to the iteration of each file
-    """
-    # Find all the files in the provided directory
-    all_files = os.listdir(path_to_dir)
-
-    # Select the hdf5 files
-    iters_and_names = []
-    for filename in all_files:
-        # Use only the name that end with .h5 or .hdf5
-        if filename[-3:] == '.h5' or filename[-5:] == '.hdf5':
-            full_name = os.path.join(
-                os.path.abspath(path_to_dir), filename)
-            # extract all iterations from hdf5 file
-            f = h5py.File(full_name, 'r')
-            iterations = list(f['/data'].keys())
-            f.close()
-            # for each found iteration create list of tuples
-            # (which can be sorted together)
-            for key_iteration in iterations:
-                iters_and_names.append((int(key_iteration), full_name))
-
-    # Sort the list of tuples according to the iteration
-    iters_and_names.sort()
-    # Extract the list of filenames and iterations
-    filenames = [name for (it, name) in iters_and_names]
-    iterations = np.array([it for (it, name) in iters_and_names])
-
-    return(filenames, iterations)
-
-
-def apply_selection(file_handle, data_list, select, species, extensions):
+def apply_selection( data_reader, data_list, select, species, extensions):
     """
     Select the elements of each particle quantities in data_list,
     based on the selection rules in `select`
 
     Parameters
     ----------
-    file_handle: h5py.File object
-        The HDF5 file from which to extract data
+    data_reader: a DataReader object
+        Contains the method that read particle data
 
     data_list: list of 1darrays
         A list of arrays with one element per macroparticle, that represent
@@ -96,7 +48,7 @@ def apply_selection(file_handle, data_list, select, species, extensions):
 
     # Loop through the selection rules, and aggregate results in select_array
     for quantity in select.keys():
-        q = read_species_data(file_handle, species, quantity, extensions)
+        q = data_reader.read_species_data( species, quantity, extensions )
         # Check lower bound
         if select[quantity][0] is not None:
             select_array = np.logical_and(
