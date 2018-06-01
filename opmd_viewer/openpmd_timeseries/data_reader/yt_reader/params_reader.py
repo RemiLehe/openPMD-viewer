@@ -65,7 +65,7 @@ def read_openPMD_params(filename, extract_parameters=True):
 
     # Find out whether fields are present and extract their metadata
     avail_fields = [ key[1] for key in ds.derived_field_list \
-                    if key[0] == 'mesh']
+                    if key[0] == 'mesh' ]
     if len(avail_fields) > 0:
         params['avail_fields'] = []
         params['fields_metadata'] = {}
