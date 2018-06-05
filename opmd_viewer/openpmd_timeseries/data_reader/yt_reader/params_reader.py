@@ -13,18 +13,23 @@ import yt
 
 # Exclude typical derived types that are not actual fields, or are duplicates
 excluded_field_keys = [ 'cell_volume', 'current_', 'dx', 'dy', 'dz',
-    'x', 'y', 'z', 'Bx', 'By', 'Bz', 'Ex', 'Ey', 'Ez', 'Jx', 'Jy', 'Jz' ]
+    'x', 'y', 'z', 'Bx', 'By', 'Bz', 'Ex', 'Ey', 'Ez', 'Jx', 'Jy', 'Jz',
+    'jx', 'jy', 'jz' ]
 # The above are duplicates because they are also present as 'B_x', etc.
 excluded_field_roots = [ 'current_', 'electric_', 'magnetic_',
-    'path_element_', 'relative_magnetic_', 'vertex_' ]
+    'path_element_', 'relative_magnetic_', 'vertex_',
+    'cylindrical_radial_magnetic_', 'cylindrical_tangential_magnetic_',
+    'radial_magnetic_', 'tangential_', 'cutting_plane_', ]
 excluded_particle_keys = [ 'particle_position', 'mesh_id',
-    'particle_ones', 'particle_weight', 'particle_radius' ]
+    'particle_ones', 'particle_weight', 'particle_radius',
+    'particle_radial_velocity' ]
 excluded_particle_roots = [
     'relative_particle_', 'particle_position_relative',
     'particle_positionCoarse_', 'particle_positionOffset_',
     'particle_spherical_position_', 'particle_position_spherical_',
     'particle_position_cylindrical', 'particle_velocity',
-    'particle_cylindrical' ]
+    'particle_cylindrical', 'particle_angular_momentum',
+    'particle_specific_angular_momentum', 'particle_spherical_' ]
 
 def read_openPMD_params(filename, extract_parameters=True):
     """
