@@ -31,6 +31,7 @@ excluded_particle_roots = [
     'particle_cylindrical', 'particle_angular_momentum',
     'particle_specific_angular_momentum', 'particle_spherical_' ]
 
+
 def read_openPMD_params(filename, extract_parameters=True):
     """
     Extract the time and some openPMD parameters from a file
@@ -69,7 +70,7 @@ def read_openPMD_params(filename, extract_parameters=True):
     params['extensions'] = []
 
     # Find out whether fields are present and extract their metadata
-    avail_fields = [ key[1] for key in ds.derived_field_list \
+    avail_fields = [ key[1] for key in ds.derived_field_list
                     if key[0] == 'mesh' ]
     if len(avail_fields) > 0:
         params['avail_fields'] = []
@@ -80,7 +81,7 @@ def read_openPMD_params(filename, extract_parameters=True):
 
             # Filter out all the excluded fields
             if key in excluded_field_keys or \
-                any( key.startswith(root) for root in excluded_field_roots ):
+                    any(key.startswith(root) for root in excluded_field_roots):
                 # Skip to the next key
                 continue
 
@@ -98,7 +99,7 @@ def read_openPMD_params(filename, extract_parameters=True):
             metadata = {}
             metadata['geometry'] = "{:d}dcartesian".format(ds.dimensionality)
             metadata['avail_circ_modes'] = []
-            metadata['axis_labels'] = [ 'x', 'y', 'z' ] # Standard in yt
+            metadata['axis_labels'] = [ 'x', 'y', 'z' ]  # Standard in yt
             # Check whether the field is a vector or a scalar
             if is_scalar_record:
                 metadata['type'] = 'scalar'
@@ -130,8 +131,9 @@ def read_openPMD_params(filename, extract_parameters=True):
                 quantity = key[1]
 
             # Filter out all the excluded particle quantities
-            if quantity in excluded_particle_keys or any( \
-                quantity.startswith(root) for root in excluded_particle_roots):
+            if quantity in excluded_particle_keys or \
+                    any( quantity.startswith(root)
+                    for root in excluded_particle_roots):
                 # Skip to the next key
                 continue
 

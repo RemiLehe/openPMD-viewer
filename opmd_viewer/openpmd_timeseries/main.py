@@ -8,7 +8,6 @@ Authors: Remi Lehe, Axel Huebl
 License: 3-Clause-BSD-LBNL
 """
 
-import os
 import numpy as np
 from tqdm import tqdm
 from .utilities import apply_selection, fit_bins_to_grid, try_array
@@ -477,7 +476,7 @@ class OpenPMDTimeSeries(InteractiveViewer):
             field_path = field
             field_label = field
         elif self.fields_metadata[field]['type'] == 'vector':
-            field_path = os.path.join(field, coord)
+            field_path = join_infile_path(field, coord)
             field_label = field + coord
 
         # Get the field data

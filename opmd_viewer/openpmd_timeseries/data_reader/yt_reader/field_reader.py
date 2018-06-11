@@ -54,7 +54,7 @@ def read_field_cartesian( filename, field_path, axis_labels,
     """
     # Open the file
     ds = yt.load(filename)
-    
+
     # Extract the full array of the fields
     ad0 = ds.covering_grid(level=0, left_edge=ds.domain_left_edge,
                            dims=ds.domain_dimensions)
@@ -63,10 +63,10 @@ def read_field_cartesian( filename, field_path, axis_labels,
 
     # Dimensions of the grid
     shape = list( ds.domain_dimensions.astype('int') )
-    grid_spacing = list( ds.domain_width.to_ndarray()/ds.domain_dimensions )
+    grid_spacing = list( ds.domain_width.to_ndarray() / ds.domain_dimensions )
     global_offset = list( ds.domain_left_edge.to_ndarray() )
     grid_unit_si = 1.
-    grid_position = [0.]*ds.dimensionality
+    grid_position = [0.] * ds.dimensionality
 
     # Slice selection
     if slicing_dir is not None:
@@ -107,7 +107,7 @@ def read_field_cartesian( filename, field_path, axis_labels,
 def read_field_circ( filename, field_path, slicing, slicing_dir, m=0,
                      theta=0. ):
     """
-    Extract field for cylindrical geometry 
+    Extract field for cylindrical geometry
     Not implemented for the yt backend
     """
     raise NotImplementedError(
@@ -146,7 +146,7 @@ def get_grid_parameters( ds, avail_fields, metadata ):
 
     # Extract relevant quantities
     labels = metadata[field_name]['axis_labels']
-    grid_spacing = ds.domain_width.to_ndarray()/ds.domain_dimensions
+    grid_spacing = ds.domain_width.to_ndarray() / ds.domain_dimensions
     grid_offset = ds.domain_left_edge.to_ndarray()
     grid_size = ds.domain_dimensions
 
@@ -160,4 +160,3 @@ def get_grid_parameters( ds, avail_fields, metadata ):
             [ grid_offset[i], grid_offset[i] + grid_size[i] * grid_spacing[i] ]
 
     return( grid_size_dict, grid_range_dict )
-

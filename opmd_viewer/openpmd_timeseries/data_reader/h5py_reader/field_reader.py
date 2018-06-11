@@ -7,11 +7,11 @@ Copyright 2015-2016, openPMD-viewer contributors
 Author: Remi Lehe
 License: 3-Clause-BSD-LBNL
 """
-import os
+
 import h5py
 import numpy as np
-from .utilities import get_shape, get_data, get_bpath
-from opmd_viewer.openpmd_timeseries.field_metainfo import FieldMetaInformation
+from .utilities import get_shape, get_data, get_bpath, join_infile_path
+from .field_metainfo import FieldMetaInformation
 
 
 def read_field_cartesian( filename, field_path, axis_labels,
@@ -192,7 +192,7 @@ def read_field_circ( filename, field_path, slicing, slicing_dir, m=0,
         F_total[:Nr, :] = (-1) ** m * F[::-1, :]
 
     axis_labels = ['r', 'z']
-    shape = [Nr, Nz]
+    shape = [2 * Nr, Nz]
     grid_spacing = list( group.attrs['gridSpacing'] )
     global_offset = list( group.attrs['gridGlobalOffset'] )
 
@@ -261,11 +261,13 @@ def find_dataset( dfile, field_path ):
     relative_meshes_path = dfile.attrs["meshesPath"].decode()
 
     # Get the proper dataset
-    full_field_path = os.path.join(base_path, relative_meshes_path, field_path)
+    full_field_path = join_infile_path(
+        base_path, relative_meshes_path, field_path )
     dset = dfile[ full_field_path ]
     # Get the proper group
     group_path = field_path.split('/')[0]
-    full_group_path = os.path.join(base_path, relative_meshes_path, group_path)
+    full_group_path = join_infile_path(
+        base_path, relative_meshes_path, group_path )
     group = dfile[ full_group_path ]
 
     return( group, dset )

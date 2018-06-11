@@ -17,14 +17,14 @@ def open_file( filename ):
     """
     TODO
     """
-    return yt.load( filename ) 
+    return yt.load( filename )
 
 
 def close_file( file_handle ):
     """
     TODO
     """
-    pass # Not sure if a yt DataSet can be closed
+    pass  # Not sure if a yt DataSet can be closed
 
 
 def list_files(path_to_dir):
