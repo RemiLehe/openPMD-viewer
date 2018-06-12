@@ -9,7 +9,11 @@ Authors: Remi Lehe
 License: 3-Clause-BSD-LBNL
 """
 from . import h5py_reader
-from . import yt_reader
+try:
+    from . import yt_reader
+    yt_installed = True
+except ImportError:
+    yt_installed = False
 
 
 class DataReader( object ):
@@ -27,6 +31,9 @@ class DataReader( object ):
         if backend == 'h5py':
             self.reader_module = h5py_reader
         elif backend == 'yt':
+            if not yt_installed:
+                raise RuntimeError(
+                    'You need to install `yt` in order to use this backend.')
             self.reader_module = yt_reader
         else:
             raise RuntimeError('Unknown backend: %s' % backend)
