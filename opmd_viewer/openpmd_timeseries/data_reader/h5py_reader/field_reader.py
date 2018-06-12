@@ -59,7 +59,10 @@ def read_field_cartesian( filename, field, coord, axis_labels,
     # Open the HDF5 file
     dfile = h5py.File( filename, 'r' )
     # Extract the dataset and and corresponding group
-    field_path = join_infile_path( field, coord )
+    if coord is None:
+        field_path = field
+    else:
+        field_path = join_infile_path( field, coord )
     group, dset = find_dataset( dfile, field_path )
 
     # Dimensions of the grid
@@ -156,7 +159,10 @@ def read_field_circ( filename, field, coord, slicing, slicing_dir, m=0,
     # Open the HDF5 file
     dfile = h5py.File( filename, 'r' )
     # Extract the dataset and and corresponding group
-    field_path = join_infile_path( field, coord )
+    if coord is None:
+        field_path = field
+    else:
+        field_path = join_infile_path( field, coord )
     group, dset = find_dataset( dfile, field_path )
 
     # Extract the metainformation

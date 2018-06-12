@@ -488,9 +488,9 @@ class OpenPMDTimeSeries(InteractiveViewer):
                     (self.fields_metadata[field]['type'] == 'vector'):
                 # For Cartesian components, combine r and t components
                 Fr, info = self.data_reader.read_field_circ( filename,
-                    field + '/r', slicing, slicing_dir, m, theta)
+                    field, 'r', slicing, slicing_dir, m, theta)
                 Ft, info = self.data_reader.read_field_circ( filename,
-                    field + '/t', slicing, slicing_dir, m, theta)
+                    field, 't', slicing, slicing_dir, m, theta)
                 if coord == 'x':
                     F = np.cos(theta) * Fr - np.sin(theta) * Ft
                 elif coord == 'y':

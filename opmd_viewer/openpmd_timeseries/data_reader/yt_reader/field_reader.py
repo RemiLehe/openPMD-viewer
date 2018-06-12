@@ -60,7 +60,10 @@ def read_field_cartesian( filename, field, coord, axis_labels,
     # Extract the full array of the fields
     ad0 = ds.covering_grid(level=0, left_edge=ds.domain_left_edge,
                            dims=ds.domain_dimensions)
-    field_yt = '_'.join( field, coord )
+    if coord is None:
+        field_yt = 'field'
+    else:
+        field_yt = '_'.join( field, coord )
     F = ad0[field_yt].to_ndarray()
 
     # Dimensions of the grid
