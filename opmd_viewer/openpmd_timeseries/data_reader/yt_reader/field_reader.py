@@ -12,7 +12,7 @@ import yt
 from opmd_viewer.openpmd_timeseries.field_metainfo import FieldMetaInformation
 
 
-def read_field_cartesian( filename, field_path, axis_labels,
+def read_field_cartesian( filename, field, coord, axis_labels,
                           slicing, slicing_dir ):
     """
     Extract a given field from an openPMD file,
@@ -23,9 +23,11 @@ def read_field_cartesian( filename, field_path, axis_labels,
     filename : string
        The absolute path to the openPMD file
 
-    field_path : string
-       The relative path to the requested field, from the openPMD meshes path
-       (e.g. 'rho', 'E/z', 'B/x')
+    field : string, optional
+       Which field to extract
+
+    coord : string, optional
+       Which component of the field to extract
 
     axis_labels: list of strings
        The name of the dimensions of the array (e.g. ['x', 'y', 'z'])
@@ -58,7 +60,7 @@ def read_field_cartesian( filename, field_path, axis_labels,
     # Extract the full array of the fields
     ad0 = ds.covering_grid(level=0, left_edge=ds.domain_left_edge,
                            dims=ds.domain_dimensions)
-    field_yt = field_path.replace('/', '_')
+    field_yt = '_'.join( field, coord )
     F = ad0[field_yt].to_ndarray()
 
     # Dimensions of the grid
@@ -104,7 +106,7 @@ def read_field_cartesian( filename, field_path, axis_labels,
     return( F, info )
 
 
-def read_field_circ( filename, field_path, slicing, slicing_dir, m=0,
+def read_field_circ( filename, field, coord, slicing, slicing_dir, m=0,
                      theta=0. ):
     """
     Extract field for cylindrical geometry

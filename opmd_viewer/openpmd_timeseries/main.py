@@ -355,11 +355,9 @@ class OpenPMDTimeSeries(InteractiveViewer):
 
         field : string, optional
            Which field to extract
-           Either 'rho', 'E', 'B' or 'J'
 
         coord : string, optional
            Which component of the field to extract
-           Either 'r', 't' or 'z'
 
         m : int or str, optional
            Only used for thetaMode geometry
@@ -473,10 +471,8 @@ class OpenPMDTimeSeries(InteractiveViewer):
 
         # Find the proper path for vector or scalar fields
         if self.fields_metadata[field]['type'] == 'scalar':
-            field_path = field
             field_label = field
         elif self.fields_metadata[field]['type'] == 'vector':
-            field_path = join_infile_path(field, coord)
             field_label = field + coord
 
         # Get the field data
@@ -485,7 +481,7 @@ class OpenPMDTimeSeries(InteractiveViewer):
         # - For cartesian
         if geometry in ["1dcartesian", "2dcartesian", "3dcartesian"]:
             F, info = self.data_reader.read_field_cartesian(
-                filename, field_path, axis_labels, slicing, slicing_dir)
+                filename, field, coord, axis_labels, slicing, slicing_dir)
         # - For thetaMode
         elif geometry == "thetaMode":
             if (coord in ['x', 'y']) and \
@@ -505,7 +501,7 @@ class OpenPMDTimeSeries(InteractiveViewer):
             else:
                 # For cylindrical or scalar components, no special treatment
                 F, info = self.data_reader.read_field_circ( filename,
-                    field_path, slicing, slicing_dir, m, theta)
+                    field, coord, slicing, slicing_dir, m, theta)
 
         # Plot the resulting field
         # Deactivate plotting when there is no slice selection

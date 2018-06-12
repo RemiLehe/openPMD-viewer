@@ -8,4 +8,5 @@ import yt
 yt.funcs.mylog.setLevel(40)  # Reduce verbosity of yt
 
 __all__ = ['list_files', 'read_openPMD_params', 'get_grid_parameters',
-           'open_file', 'close_file', 'read_species_data' ]
+           'open_file', 'close_file', 'read_species_data',
+            'read_field_cartesian', 'read_field_circ']

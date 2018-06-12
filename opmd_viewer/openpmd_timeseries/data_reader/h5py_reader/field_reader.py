@@ -14,7 +14,7 @@ from .utilities import get_shape, get_data, get_bpath, join_infile_path
 from opmd_viewer.openpmd_timeseries.field_metainfo import FieldMetaInformation
 
 
-def read_field_cartesian( filename, field_path, axis_labels,
+def read_field_cartesian( filename, field, coord, axis_labels,
                           slicing, slicing_dir ):
     """
     Extract a given field from an HDF5 file in the openPMD format,
@@ -25,9 +25,11 @@ def read_field_cartesian( filename, field_path, axis_labels,
     filename : string
        The absolute path to the HDF5 file
 
-    field_path : string
-       The relative path to the requested field, from the openPMD meshes path
-       (e.g. 'rho', 'E/z', 'B/x')
+    field : string, optional
+       Which field to extract
+
+    coord : string, optional
+       Which component of the field to extract
 
     axis_labels: list of strings
        The name of the dimensions of the array (e.g. ['x', 'y', 'z'])
@@ -57,6 +59,7 @@ def read_field_cartesian( filename, field_path, axis_labels,
     # Open the HDF5 file
     dfile = h5py.File( filename, 'r' )
     # Extract the dataset and and corresponding group
+    field_path = join_infile_path( field, coord )
     group, dset = find_dataset( dfile, field_path )
 
     # Dimensions of the grid
@@ -108,7 +111,7 @@ def read_field_cartesian( filename, field_path, axis_labels,
     return( F, info )
 
 
-def read_field_circ( filename, field_path, slicing, slicing_dir, m=0,
+def read_field_circ( filename, field, coord, slicing, slicing_dir, m=0,
                      theta=0. ):
     """
     Extract a given field from an HDF5 file in the openPMD format,
@@ -119,9 +122,11 @@ def read_field_circ( filename, field_path, slicing, slicing_dir, m=0,
     filename : string
        The absolute path to the HDF5 file
 
-    field_path : string
-       The relative path to the requested field, from the openPMD meshes path
-       (e.g. 'rho', 'E/r', 'B/x')
+    field : string, optional
+       Which field to extract
+
+    coord : string, optional
+       Which component of the field to extract
 
     m : int or string, optional
        The azimuthal mode to be extracted
@@ -151,6 +156,7 @@ def read_field_circ( filename, field_path, slicing, slicing_dir, m=0,
     # Open the HDF5 file
     dfile = h5py.File( filename, 'r' )
     # Extract the dataset and and corresponding group
+    field_path = join_infile_path( field, coord )
     group, dset = find_dataset( dfile, field_path )
 
     # Extract the metainformation

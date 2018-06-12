@@ -9,10 +9,6 @@ Authors: Remi Lehe, Axel Huebl
 License: 3-Clause-BSD-LBNL
 """
 
-import os
-import numpy as np
-from scipy import constants
-
 
 def read_species_data(ds, species, record_comp, extensions):
     """

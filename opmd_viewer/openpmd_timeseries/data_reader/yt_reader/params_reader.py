@@ -7,8 +7,6 @@ Copyright 2015-2018, openPMD-viewer contributors
 Authors: Remi Leh
 License: 3-Clause-BSD-LBNL
 """
-import os
-import numpy as np
 import yt
 
 # Exclude typical derived types that are not actual fields, or are duplicates
