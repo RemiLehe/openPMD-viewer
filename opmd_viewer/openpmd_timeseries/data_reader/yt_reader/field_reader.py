@@ -63,7 +63,7 @@ def read_field_cartesian( filename, field, coord, axis_labels,
     if coord is None:
         field_yt = 'field'
     else:
-        field_yt = '_'.join( field, coord )
+        field_yt = field + '_' + coord
     F = ad0[field_yt].to_ndarray()
 
     # Dimensions of the grid

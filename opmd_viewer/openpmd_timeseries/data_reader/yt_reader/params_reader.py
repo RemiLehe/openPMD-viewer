@@ -97,7 +97,11 @@ def read_openPMD_params(filename, extract_parameters=True):
             metadata = {}
             metadata['geometry'] = "{:d}dcartesian".format(ds.dimensionality)
             metadata['avail_circ_modes'] = []
-            metadata['axis_labels'] = [ 'x', 'y', 'z' ]  # Standard in yt
+            if ds.dimensionality == 2:
+                metadata['axis_labels'] = [ 'x', 'z' ]
+            else:
+                metadata['axis_labels'] = [ 'x', 'y', 'z' ]
+                
             # Check whether the field is a vector or a scalar
             if is_scalar_record:
                 metadata['type'] = 'scalar'
