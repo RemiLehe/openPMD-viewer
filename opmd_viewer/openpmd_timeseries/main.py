@@ -472,6 +472,7 @@ class OpenPMDTimeSeries(InteractiveViewer):
         # Find the proper path for vector or scalar fields
         if self.fields_metadata[field]['type'] == 'scalar':
             field_label = field
+            coord = None  # irrespective of what the user entered for `coord`
         elif self.fields_metadata[field]['type'] == 'vector':
             field_label = field + coord
 
