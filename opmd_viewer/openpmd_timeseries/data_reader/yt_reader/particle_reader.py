@@ -8,7 +8,7 @@ Copyright 2015-2016, openPMD-viewer contributors
 Authors: Remi Lehe, Axel Huebl
 License: 3-Clause-BSD-LBNL
 """
-
+from scipy import constants
 
 def read_species_data(ds, species, record_comp, extensions):
     """
@@ -48,12 +48,9 @@ def read_species_data(ds, species, record_comp, extensions):
     data = ad[ (species, opmd_record_comp) ].to_ndarray()
 
     # - Return momentum in normalized units
-#    elif record_comp in ['ux', 'uy', 'uz' ]:
-#        m = get_data(species_grp['mass'])
-#        # Normalize only if the particle mass is non-zero
-#        if np.all( m != 0 ):
-#            norm_factor = 1. / (m * constants.c)
-#            data *= norm_factor
+    if record_comp in ['ux', 'uy', 'uz' ]:
+        norm_factor = 1. / (constants.c)
+        data *= norm_factor
 
     # Return the data
     return(data)
