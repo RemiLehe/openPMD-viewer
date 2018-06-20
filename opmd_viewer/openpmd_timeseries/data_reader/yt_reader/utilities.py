@@ -9,6 +9,7 @@ Authors: Remi Lehe
 License: 3-Clause-BSD-LBNL
 """
 import os
+import re
 import numpy as np
 import yt
 
@@ -50,12 +51,21 @@ def list_files(path_to_dir):
 
     # Select all files
     filenames = []
+    iters_and_names = []
     for filename in all_files:
         full_name = os.path.join(
             os.path.abspath(path_to_dir), filename)
-        filenames.append( full_name )
+        # Extract the iteration number
+        # (Assumes that the iteration number is part of the filename,
+        # and is the last number - with at least 2 digist - in the filename)
+        numbers = re.findall( '\d\d+', filename )
+        iteration = int(numbers[-1])
+        iters_and_names.append( (iteration, full_name) )
 
     # Sort the list of tuples according to the iteration
-    iterations = np.arange( len(filenames), dtype='int64' )
+    iters_and_names.sort()
+    # Extract the list of filenames and iterations
+    filenames = [name for (it, name) in iters_and_names]
+    iterations = np.array([it for (it, name) in iters_and_names])
 
     return(filenames, iterations)
