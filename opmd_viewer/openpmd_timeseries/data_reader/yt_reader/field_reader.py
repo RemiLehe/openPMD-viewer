@@ -64,14 +64,21 @@ def read_field_cartesian( filename, field, coord, axis_labels,
         field_yt = 'field'
     else:
         field_yt = field + '_' + coord
-    F = ad0[field_yt].to_ndarray()
 
     # Dimensions of the grid
-    shape = list( ds.domain_dimensions.astype('int') )
-    grid_spacing = list( ds.domain_width.to_ndarray() / ds.domain_dimensions )
-    global_offset = list( ds.domain_left_edge.to_ndarray() )
+    dim = ds.dimensionality
+    shape = list( ds.domain_dimensions.astype('int') )[:dim]
+    grid_spacing = list( ds.domain_width.to_ndarray() \
+                         / ds.domain_dimensions )[:dim]
+    global_offset = list( ds.domain_left_edge.to_ndarray() )[:dim]
     grid_unit_si = 1.
-    grid_position = [0.] * ds.dimensionality
+    grid_position = [0.] * dim
+
+    # Extract fields
+    F = ad0[field_yt].to_ndarray()
+    if F.ndim != dim:
+        # Ensure that 2D fields are represented as 2darrays
+        F = F.reshape(shape)
 
     # Slice selection
     if slicing_dir is not None:
